@@ -4,10 +4,19 @@
 	<height>100</height>
 	<ndepths>4</ndepths>
 	<eventlayer>
-
+		<event>
+			<id>0</id>
+			<x>10</x>
+			<y>10</y>
+		</event>
 	</eventlayer>
 	<layer>
 		<depth>0</depth>
+		<tile>
+			<tileid>0</tileid>
+			<x>10</x>
+			<y>10</y>
+		</tile>
 		<tile>
 			<tileid>0</tileid>
 			<x>5</x>

@@ -5,10 +5,7 @@
 package roamingprototype;
 
 import java.awt.Color;
-import java.awt.DisplayMode;
 import java.awt.Graphics;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -70,9 +67,17 @@ public class Launcher extends JFrame implements Settings, KeyListener
         layers = new Image[grid.length];
         for(int l = 0; l < layers.length; l++)
         {
+            //Create image for this layer
             Image image = new BufferedImage(grid[0][0].length*cell_size, grid[0].length*cell_size, BufferedImage.TYPE_INT_ARGB);
             Graphics g = image.getGraphics();
             
+            if(l == 0)
+            {
+                g.setColor(Color.gray);
+                g.fillRect(0, 0, image.getWidth(this), image.getHeight(this));
+            }
+            
+            //Paint all tiles on this layer to this image
             for(int row = 0; row < grid[0].length; row++)
             {
                 for(int col = 0; col < grid[0][0].length; col++)
@@ -120,36 +125,39 @@ public class Launcher extends JFrame implements Settings, KeyListener
                 dir = player.dir;
             }
             
-            switch(dir)
+            if(player.x > 0 && player.x < width && player.y > 0 && player.y < height)
             {
-                case 0:
-                    if((collisions[(int)player.y / cell_size][(int)player.x / cell_size + 1] & 0x1) == 1)
-                    {
-                        player.stop();
-                        dir = -1;
-                    }
-                    break;
-                case 1:
-                    if((collisions[(int)player.y / cell_size + 1][(int)player.x / cell_size] & 0x1) == 1)
-                    {
-                        player.stop();
-                        dir = -1;
-                    }
-                    break;
-                case 2:
-                    if((collisions[(int)player.y / cell_size][(int)player.x / cell_size - 1] & 0x1) == 1)
-                    {
-                        player.stop();
-                        dir = -1;
-                    }
-                    break;
-                case 3:
-                    if((collisions[(int)player.y / cell_size - 1][(int)player.x / cell_size] & 0x1) == 1)
-                    {
-                        player.stop();
-                        dir = -1;
-                    }
-                    break;
+                switch(dir)
+                {
+                    case 0:
+                        if((collisions[(int)player.y / cell_size][(int)player.x / cell_size + 1] & 0x1) == 1)
+                        {
+                            player.stop();
+                            dir = -1;
+                        }
+                        break;
+                    case 1:
+                        if((collisions[(int)player.y / cell_size + 1][(int)player.x / cell_size] & 0x1) == 1)
+                        {
+                            player.stop();
+                            dir = -1;
+                        }
+                        break;
+                    case 2:
+                        if((collisions[(int)player.y / cell_size][(int)player.x / cell_size - 1] & 0x1) == 1)
+                        {
+                            player.stop();
+                            dir = -1;
+                        }
+                        break;
+                    case 3:
+                        if((collisions[(int)player.y / cell_size - 1][(int)player.x / cell_size] & 0x1) == 1)
+                        {
+                            player.stop();
+                            dir = -1;
+                        }
+                        break;
+                }
             }
         }
         
@@ -183,7 +191,7 @@ public class Launcher extends JFrame implements Settings, KeyListener
         mutex.down();
         
             //Clean canvas
-            canvas.setColor(Color.gray);
+            canvas.setColor(Color.black);
             canvas.fillRect(0, 0, width, height);
 
             //Update tiles
@@ -195,16 +203,17 @@ public class Launcher extends JFrame implements Settings, KeyListener
             }
 
             //Ground and bottom decoration
-            canvas.drawImage(layers[0], 0, 0, this);
-            canvas.drawImage(layers[1], 0, 0, this);
+            canvas.drawImage(layers[0], (int)-player.x + width/2 - cell_size/2, (int)-player.y + height/2 - cell_size/2, this);
+            canvas.drawImage(layers[1], (int)-player.x + width/2 - cell_size/2, (int)-player.y + height/2 - cell_size/2, this);
 
             //Display player
             canvas.setColor(Color.yellow);
-            canvas.fillRect((int) player.x, (int) player.y, 32, 32);
+//            canvas.fillRect((int) player.x, (int) player.y, 32, 32);
+            canvas.fillRect(width/2 - cell_size/2, height/2 - cell_size/2, 32, 32);
             
             //Top decoration
-            canvas.drawImage(layers[2], 0, 0, this);
-            canvas.drawImage(layers[3], 0, 0, this);
+            canvas.drawImage(layers[2], (int)-player.x + width/2 - cell_size/2, (int)-player.y + height/2 - cell_size/2, this);
+            canvas.drawImage(layers[3], (int)-player.x + width/2 - cell_size/2, (int)-player.y + height/2 - cell_size/2, this);
             
             //Display FPS
             canvas.setColor(Color.white);

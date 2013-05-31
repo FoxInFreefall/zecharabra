@@ -16,6 +16,7 @@ public class LevelLoader extends Loader
     //Data
     private Tile[][][] grid;
     private ArrayList<Triple> animTiles = new ArrayList<>();
+    private int[][] events;
     
     //workbench
     private int wide, high;
@@ -47,12 +48,14 @@ public class LevelLoader extends Loader
                 
             case "ndepths":
                 grid = new Tile[Integer.valueOf(text)][high][wide];
+                events = new int[high][wide];
                 break;
                 
             case "depth":
                 currentLayer = Integer.valueOf(text);
                 break;
                 
+            case "id":
             case "tileid":
                 tileid = Integer.valueOf(text);
                 break;
